@@ -25,7 +25,15 @@ impl Notetype {
         for (index, field) in other.fields.iter().enumerate() {
             match self.find_field(field) {
                 Some(i) if i == index => (),
-                Some(i) => self.fields.swap(i, index),
+                Some(i) => {
+                    // Ensure index is within bounds before swapping
+                    if index >= self.fields.len() {
+                        let mut missing = field.clone();
+                        missing.ord.take();
+                        self.fields.insert(index, missing);
+                    }
+                    self.fields.swap(i, index);
+                }
                 None => {
                     let mut missing = field.clone();
                     missing.ord.take();
@@ -47,7 +55,15 @@ impl Notetype {
         for (index, template) in other.templates.iter().enumerate() {
             match self.find_template(template) {
                 Some(i) if i == index => (),
-                Some(i) => self.templates.swap(i, index),
+                Some(i) => {
+                    // Ensure index is within bounds before swapping
+                    if index >= self.templates.len() {
+                        let mut missing = template.clone();
+                        missing.ord.take();
+                        self.templates.insert(index, missing);
+                    }
+                    self.templates.swap(i, index);
+                }
                 None => {
                     let mut missing = template.clone();
                     missing.ord.take();
